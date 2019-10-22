@@ -1,6 +1,8 @@
 import json
 import tkinter as tk
 
+from util import read_sudoku_from_file
+
 
 class Application(tk.Frame):
     def __init__(self, master=None):
@@ -40,19 +42,10 @@ class Application(tk.Frame):
             json.dump(sudoku_data, file_handle, indent=2)
 
 
-def read_sudoku_from_file(file):
-    try:
-        with open(file) as file_handle:
-            sudoku_data = json.load(file_handle)
-    except FileNotFoundError:
-        sudoku_data = {'sudokus': []}
+if __name__ == '__main__':
+    root = tk.Tk()
+    app = Application(master=root)
+    # app.mainloop()
 
-    return sudoku_data
-
-
-root = tk.Tk()
-app = Application(master=root)
-
-
-import IPython  # noqa
-IPython.embed()
+    import IPython  # noqa
+    IPython.embed()
