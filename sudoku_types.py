@@ -84,8 +84,7 @@ class StandardSudoku(Sudoku):
         return len(self.filter_filled_cells()) == 0
 
     def eliminate_column_values(self):
-        empty_cells = self.filter_filled_cells()
-        for cell in empty_cells:
+        for cell in self.empty_cells:
             cell_index = self.get_cell_index(cell)
             column_index = self.get_column_index(cell_index)
             column_cells = self.get_cells_in_column(column_index)
@@ -95,10 +94,13 @@ class StandardSudoku(Sudoku):
                     cell.viable_values.remove(column_cell.value)
 
     def fill_singles(self):
-        empty_cells = self.filter_filled_cells()
-        for cell in empty_cells:
+        for cell in self.empty_cells:
             if len(cell.viable_values) == 1:
                 cell.value = cell.viable_values[0]
+
+    @property
+    def empty_cells(self):
+        return self.filter_filled_cells()
 
     def get_cells_in_row(self, row_index):
         return list(filter(lambda cell: cell.row == row_index, self.cells))
