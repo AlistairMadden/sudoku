@@ -93,6 +93,17 @@ class StandardSudoku(Sudoku):
                 if column_cell.value:
                     cell.viable_values.remove(column_cell.value)
 
+    def eliminate_row_values(self):
+        for cell in self.empty_cells:
+            cell_index = self.get_cell_index(cell)
+            row_index = self.get_row_index(cell_index)
+            row_cells = self.get_cells_in_row(row_index)
+
+            for row_cell in row_cells:
+                row_cell_value = row_cell.value
+                if row_cell_value:
+                    cell.viable_values.remove(row_cell_value)
+
     def fill_singles(self):
         for cell in self.empty_cells:
             if len(cell.viable_values) == 1:
