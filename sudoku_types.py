@@ -104,6 +104,17 @@ class StandardSudoku(Sudoku):
                 if row_cell_value:
                     cell.viable_values.remove(row_cell_value)
 
+    def eliminate_box_values(self):
+        for cell in self.empty_cells:
+            cell_index = self.get_cell_index(cell)
+            box_index = self.get_box_index(cell_index)
+            box_cells = self.get_cells_in_box(box_index)
+
+            for box_cell in box_cells:
+                box_cell_value = box_cell.value
+                if box_cell_value:
+                    cell.viable_values.remove(box_cell_value)
+
     def fill_singles(self):
         for cell in self.empty_cells:
             if len(cell.viable_values) == 1:

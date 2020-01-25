@@ -303,6 +303,100 @@ class TestStandardSudokuMethods(unittest.TestCase):
             viable_values = list(map(lambda cell: cell.viable_values, self.standard_soduku_instance.cells))
             self.assertEqual(viable_values, test_case['viable_values'])
 
+    def test_eliminate_box_values(self):
+        test_cases = [
+            {
+                'viable_values': [
+                    [],
+                    [1, 3, 4, 5, 6],
+                    [1, 3, 4, 5, 6],
+                    [],
+                    [],
+                    [2, 4, 5, 6, 7, 8],
+                    [1, 3, 5, 7, 8],
+                    [1, 3, 5, 7, 8],
+                    [],
+                    [1, 3, 4, 5, 6],
+                    [1, 3, 4, 5, 6],
+                    [],
+                    [2, 4, 5, 6, 7, 8],
+                    [2, 4, 5, 6, 7, 8],
+                    [2, 4, 5, 6, 7, 8],
+                    [1, 3, 5, 7, 8],
+                    [],
+                    [1, 3, 5, 7, 8],
+                    [],
+                    [1, 3, 4, 5, 6],
+                    [],
+                    [],
+                    [2, 4, 5, 6, 7, 8],
+                    [2, 4, 5, 6, 7, 8],
+                    [],
+                    [],
+                    [1, 3, 5, 7, 8],
+                    [],
+                    [1, 3, 4, 5, 8, 9],
+                    [1, 3, 4, 5, 8, 9],
+                    [1, 2, 3, 4, 5, 7, 8, 9],
+                    [1, 2, 3, 4, 5, 7, 8, 9],
+                    [1, 2, 3, 4, 5, 7, 8, 9],
+                    [1, 2, 3, 4, 6, 8],
+                    [],
+                    [1, 2, 3, 4, 6, 8],
+                    [1, 3, 4, 5, 8, 9],
+                    [],
+                    [1, 3, 4, 5, 8, 9],
+                    [1, 2, 3, 4, 5, 7, 8, 9],
+                    [1, 2, 3, 4, 5, 7, 8, 9],
+                    [1, 2, 3, 4, 5, 7, 8, 9],
+                    [1, 2, 3, 4, 6, 8],
+                    [],
+                    [1, 2, 3, 4, 6, 8],
+                    [1, 3, 4, 5, 8, 9],
+                    [],
+                    [1, 3, 4, 5, 8, 9],
+                    [1, 2, 3, 4, 5, 7, 8, 9],
+                    [1, 2, 3, 4, 5, 7, 8, 9],
+                    [],
+                    [1, 2, 3, 4, 6, 8],
+                    [1, 2, 3, 4, 6, 8],
+                    [],
+                    [1, 4, 6, 8, 9],
+                    [],
+                    [],
+                    [1, 3, 4, 5, 7, 9],
+                    [1, 3, 4, 5, 7, 9],
+                    [],
+                    [],
+                    [1, 2, 3, 7, 9],
+                    [],
+                    [1, 4, 6, 8, 9],
+                    [],
+                    [1, 4, 6, 8, 9],
+                    [1, 3, 4, 5, 7, 9],
+                    [1, 3, 4, 5, 7, 9],
+                    [1, 3, 4, 5, 7, 9],
+                    [],
+                    [1, 2, 3, 7, 9],
+                    [1, 2, 3, 7, 9],
+                    [],
+                    [1, 4, 6, 8, 9],
+                    [1, 4, 6, 8, 9],
+                    [1, 3, 4, 5, 7, 9],
+                    [],
+                    [],
+                    [1, 2, 3, 7, 9],
+                    [1, 2, 3, 7, 9],
+                    []
+                ]
+            }
+        ]
+
+        for test_case in test_cases:
+            self.standard_soduku_instance.eliminate_box_values()
+            viable_values = list(map(lambda cell: cell.viable_values, self.standard_soduku_instance.cells))
+            self.assertEqual(viable_values, test_case['viable_values'])
+
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
