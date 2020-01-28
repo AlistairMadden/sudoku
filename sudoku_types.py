@@ -125,16 +125,16 @@ class StandardSudoku(Sudoku):
         return self.filter_filled_cells()
 
     def get_cells_in_row(self, row_index):
-        return list(filter(lambda cell: cell.row == row_index, self.cells))
+        return [cell for cell in self if cell.row == row_index]
 
     def get_cells_in_column(self, column_index):
-        return list(filter(lambda cell: cell.column == column_index, self.cells))
+        return [cell for cell in self if cell.column == column_index]
 
     def get_cells_in_box(self, box_index):
-        return list(filter(lambda cell: cell.box == box_index, self.cells))
+        return [cell for cell in self if cell.box == box_index]
 
     def filter_filled_cells(self):
-        return list(filter(lambda cell: cell.value is None, self))
+        return [cell for cell in self if cell.value is None]
 
     def get_cell_index(self, cell):
         return self.cells.index(cell)
