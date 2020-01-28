@@ -14,6 +14,7 @@ class Sudoku(metaclass=ABCMeta):
 
     def __next__(self):
         if self._iteration_index == self.NUM_CELLS:
+            self._iteration_index = 0
             raise StopIteration
 
         next_cell = self.cells[self._iteration_index]
