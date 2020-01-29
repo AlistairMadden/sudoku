@@ -92,7 +92,11 @@ class StandardSudoku(Sudoku):
 
             for column_cell in column_cells:
                 if column_cell.value:
-                    cell.viable_values.remove(column_cell.value)
+                    try:
+                        cell.viable_values.remove(column_cell.value)
+                    except ValueError:
+                        # Removing value not in viable_values. This is fine.
+                        pass
 
     def eliminate_row_values(self):
         for cell in self.empty_cells:
@@ -103,7 +107,11 @@ class StandardSudoku(Sudoku):
             for row_cell in row_cells:
                 row_cell_value = row_cell.value
                 if row_cell_value:
-                    cell.viable_values.remove(row_cell_value)
+                    try:
+                        cell.viable_values.remove(row_cell_value)
+                    except ValueError:
+                        # Removing value not in viable_values. This is fine.
+                        pass
 
     def eliminate_box_values(self):
         for cell in self.empty_cells:
@@ -114,7 +122,11 @@ class StandardSudoku(Sudoku):
             for box_cell in box_cells:
                 box_cell_value = box_cell.value
                 if box_cell_value:
-                    cell.viable_values.remove(box_cell_value)
+                    try:
+                        cell.viable_values.remove(box_cell_value)
+                    except ValueError:
+                        # Removing value not in viable_values. This is fine.
+                        pass
 
     def fill_singles(self):
         for cell in self.empty_cells:

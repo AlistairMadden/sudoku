@@ -209,6 +209,10 @@ class TestStandardSudokuMethods(unittest.TestCase):
             viable_values = list(map(lambda cell: cell.viable_values, self.standard_soduku_instance.cells))
             self.assertEqual(viable_values, test_case['viable_values'])
 
+            # Should not change if run again
+            self.standard_soduku_instance.eliminate_column_values()
+            self.assertEqual(viable_values, test_case['viable_values'])
+
     def test_eliminate_row_values(self):
         test_cases = [
             {
@@ -303,6 +307,10 @@ class TestStandardSudokuMethods(unittest.TestCase):
             viable_values = list(map(lambda cell: cell.viable_values, self.standard_soduku_instance.cells))
             self.assertEqual(viable_values, test_case['viable_values'])
 
+            # Should not change if run again
+            self.standard_soduku_instance.eliminate_row_values()
+            self.assertEqual(viable_values, test_case['viable_values'])
+
     def test_eliminate_box_values(self):
         test_cases = [
             {
@@ -395,6 +403,10 @@ class TestStandardSudokuMethods(unittest.TestCase):
         for test_case in test_cases:
             self.standard_soduku_instance.eliminate_box_values()
             viable_values = list(map(lambda cell: cell.viable_values, self.standard_soduku_instance.cells))
+            self.assertEqual(viable_values, test_case['viable_values'])
+
+            # Should not change if run again
+            self.standard_soduku_instance.eliminate_box_values()
             self.assertEqual(viable_values, test_case['viable_values'])
 
 
