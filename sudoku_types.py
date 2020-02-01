@@ -1,3 +1,4 @@
+import copy
 import itertools
 from abc import ABCMeta, abstractmethod
 
@@ -65,15 +66,24 @@ class StandardSudoku(Sudoku):
         pass
 
     def solve(self):
-        elimination_methods = itertools.cycle([
+        elimination_methods = [
             self.eliminate_column_values,
             self.eliminate_row_values,
             self.eliminate_box_values
-        ])
+        ]
+
+        current_state = copy.deepcopy(self)
 
         while(not self.solved):
-            next(elimination_methods)()
+            for elimination_method in elimination_methods:
+                elimination_method()
             self.fill_singles()
+
+            if current_state == self:
+                print('Puzzle could not be solved.')
+                break
+            else:
+                current_state = copy.deepcopy(self)
 
     @property
     def solved(self):
