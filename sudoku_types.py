@@ -11,6 +11,12 @@ class Sudoku(metaclass=ABCMeta):
     def __iter__(self):
         return iter(self.cells)
 
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+
+        return all(self_cell.value == other_cell.value for self_cell, other_cell in zip(self, other))
+
     @property
     @abstractmethod
     def NUM_CELLS(self):

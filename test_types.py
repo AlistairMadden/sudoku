@@ -24,6 +24,24 @@ class TestStandardSudokuMethods(unittest.TestCase):
         with self.assertRaises(StopIteration):
             next(iterator)
 
+    def test_equality(self):
+        self.assertTrue(self.standard_soduku_instance == self.standard_soduku_instance)
+
+        second_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][0])
+        self.assertTrue(self.standard_soduku_instance == second_sudoku_instance)
+
+        third_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][0])
+        second_sudoku_instance.cells[0].value = 1
+        third_sudoku_instance.cells[0].value = 1
+        self.assertTrue(second_sudoku_instance == third_sudoku_instance)
+
+        third_sudoku_instance.cells[0].value = 2
+        self.assertFalse(second_sudoku_instance == third_sudoku_instance)
+
+        self.assertFalse([] == second_sudoku_instance)
+
+        self.assertFalse(3 == second_sudoku_instance)
+
     def test_get_box_index(self):
         test_cases = [
             {
