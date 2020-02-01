@@ -14,6 +14,16 @@ class TestStandardSudokuMethods(unittest.TestCase):
     def test_instantiate(self):
         self.assertEqual(list(map(lambda cell: cell.value, self.standard_soduku_instance)), TEST_SUDOKU_DATA['sudokus'][0])
 
+    def test_iteration(self):
+
+        iterator = iter(self.standard_soduku_instance)
+
+        for test_sudoku_value in TEST_SUDOKU_DATA['sudokus'][0]:
+            self.assertEqual(next(iterator).value, test_sudoku_value)
+
+        with self.assertRaises(StopIteration):
+            next(iterator)
+
     def test_get_box_index(self):
         test_cases = [
             {

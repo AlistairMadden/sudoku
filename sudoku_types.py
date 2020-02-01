@@ -6,21 +6,10 @@ class Sudoku(metaclass=ABCMeta):
     '''TODO: Refactor to subclass list?'''
 
     def __init__(self):
-        self._iteration_index = 0
         self.cells = []
 
     def __iter__(self):
-        return self
-
-    def __next__(self):
-        if self._iteration_index == self.NUM_CELLS:
-            self._iteration_index = 0
-            raise StopIteration
-
-        next_cell = self.cells[self._iteration_index]
-        self._iteration_index += 1
-
-        return next_cell
+        return iter(self.cells)
 
     @property
     @abstractmethod
