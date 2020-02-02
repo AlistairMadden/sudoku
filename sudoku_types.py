@@ -1,6 +1,6 @@
 import copy
-import itertools
-from abc import ABCMeta, abstractmethod
+
+from abc import ABCMeta
 
 
 class Sudoku(metaclass=ABCMeta):
