@@ -448,3 +448,6 @@ class TestStandardSudokuMethods(unittest.TestCase):
         expected_sudoku = StandardSudoku(expected_sudoku_data)
 
         self.assertEqual(self.standard_soduku_instance, expected_sudoku)
+
+    def test_num_cells(self):
+        self.assertEqual(StandardSudoku.NUM_CELLS, 81)

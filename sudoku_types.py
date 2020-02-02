@@ -18,17 +18,12 @@ class Sudoku(metaclass=ABCMeta):
 
         return all(self_cell.value == other_cell.value for self_cell, other_cell in zip(self, other))
 
-    @property
-    @abstractmethod
-    def NUM_CELLS(self):
-        pass
+    NUM_CELLS = None
 
 
 class StandardSudoku(Sudoku):
 
-    @property
-    def NUM_CELLS(self):
-        return 81
+    NUM_CELLS = 81
 
     def __init__(self, data):
         super().__init__()
