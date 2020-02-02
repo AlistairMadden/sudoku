@@ -437,6 +437,14 @@ class TestStandardSudokuMethods(unittest.TestCase):
             self.standard_soduku_instance.eliminate_box_values()
             self.assertEqual(viable_values, test_case['viable_values'])
 
+    def test_fill_singles(self):
+        for cell in self.standard_soduku_instance.empty_cells:
+            cell.viable_values = [1]
 
-if __name__ == '__main__':
-    unittest.main(verbosity=2)
+        self.standard_soduku_instance.fill_singles()
+
+        expected_sudoku_data = TEST_SUDOKU_DATA['sudokus'][0]
+        expected_sudoku_data = [value if value else 1 for value in expected_sudoku_data]
+        expected_sudoku = StandardSudoku(expected_sudoku_data)
+
+        self.assertEqual(self.standard_soduku_instance, expected_sudoku)
