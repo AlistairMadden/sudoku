@@ -152,6 +152,18 @@ class StandardSudoku(Sudoku):
     def get_cell_index(self, cell):
         return self.cells.index(cell)
 
+    def __str__(self):
+        pretty_string = ''
+        for i in range(9):
+            for j in range(9):
+                value = self.cells[i*9 + j].value
+                pretty_string += str(value if value is not None else 0)
+                if j != 8:
+                    pretty_string += ' '
+            pretty_string += '\n'
+
+        return pretty_string
+
 
 class Box:
     def __init__(self, rows, columns, cells):
