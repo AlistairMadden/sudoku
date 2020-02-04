@@ -455,3 +455,12 @@ class TestStandardSudokuMethods(unittest.TestCase):
     def test_generate(self):
         with self.assertRaises(NotImplementedError):
             self.standard_sudoku_instance.generate()
+
+    def test_solved_property(self):
+
+        self.assertFalse(self.standard_sudoku_instance.solved)
+
+        for cell in self.standard_sudoku_instance:
+            cell.value = 1
+
+        self.assertTrue(self.standard_sudoku_instance.solved)
