@@ -451,3 +451,7 @@ class TestStandardSudokuMethods(unittest.TestCase):
 
     def test_num_cells(self):
         self.assertEqual(StandardSudoku.NUM_CELLS, 81)
+
+    def test_generate(self):
+        with self.assertRaises(NotImplementedError):
+            self.standard_sudoku_instance.generate()

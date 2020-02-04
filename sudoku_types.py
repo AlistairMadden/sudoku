@@ -58,7 +58,7 @@ class StandardSudoku(Sudoku):
         #   Choose a number at random from viable numbers
         #   If all remaining cells have viable numbers, continue
         #   Else pick a different number
-        pass
+        raise NotImplementedError
 
     def solve(self):
         elimination_methods = [
