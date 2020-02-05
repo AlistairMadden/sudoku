@@ -464,3 +464,19 @@ class TestStandardSudokuMethods(unittest.TestCase):
             cell.value = 1
 
         self.assertTrue(self.standard_sudoku_instance.solved)
+
+    def test_str_representation(self):
+
+        expected_str_representation = (
+            '8 0 0 9 3 0 0 0 2\n'
+            '0 0 9 0 0 0 0 4 0\n'
+            '7 0 2 1 0 0 9 6 0\n'
+            '2 0 0 0 0 0 0 9 0\n'
+            '0 6 0 0 0 0 0 7 0\n'
+            '0 7 0 0 0 6 0 0 5\n'
+            '0 2 7 0 0 8 4 0 6\n'
+            '0 3 0 0 0 0 5 0 0\n'
+            '5 0 0 0 6 2 0 0 8\n'
+        )
+
+        self.assertEqual(self.standard_sudoku_instance.__str__(), expected_str_representation)
