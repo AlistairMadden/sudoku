@@ -1,3 +1,4 @@
+import collections
 import copy
 
 from abc import ABCMeta
@@ -28,16 +29,18 @@ class StandardSudoku(Sudoku):
     def __init__(self, data):
         super().__init__()
 
+        self.rows = [Row() for i in range(9)]
+
         for cell_index, value in enumerate(data):
-            self.cells.append(
-                Cell(
-                    value,
-                    cell_index,
-                    self.get_column_index(cell_index),
-                    self.get_row_index(cell_index),
-                    self.get_box_index(cell_index)
-                )
+            cell = Cell(
+                value,
+                cell_index,
+                self.get_column_index(cell_index),
+                self.get_row_index(cell_index),
+                self.get_box_index(cell_index)
             )
+            self.cells.append(cell)
+            self.rows[cell.row].append(cell)
 
     def get_row_index(self, cell_index):
         return cell_index // 9
@@ -73,6 +76,7 @@ class StandardSudoku(Sudoku):
             for elimination_method in elimination_methods:
                 elimination_method()
             self.fill_singles()
+            self.fill_only_options()
 
             if current_state == self:
                 print('Puzzle could not be solved.')
@@ -133,6 +137,13 @@ class StandardSudoku(Sudoku):
             if len(cell.viable_values) == 1:
                 cell.value = cell.viable_values[0]
 
+    def fill_only_options(self):
+        self.fill_only_row_options()
+
+    def fill_only_row_options(self):
+        for row in self.rows:
+            row.fill_only_options()
+
     @property
     def empty_cells(self):
         return self.filter_filled_cells()
@@ -163,6 +174,27 @@ class StandardSudoku(Sudoku):
             pretty_string += '\n'
 
         return pretty_string
+
+
+class Row(collections.UserList):
+    def __init__(self, cells=[]):
+        self.data = cells
+
+    @property
+    def empty_cells(self):
+        return (cell for cell in self.data if cell.value is None)
+
+    def fill_only_options(self):
+
+        viable_value_cell_mapping = collections.defaultdict(list)
+
+        for cell in self.empty_cells:
+            for viable_value in cell.viable_values:
+                viable_value_cell_mapping[viable_value].append(cell)
+
+        for value, cell_list in viable_value_cell_mapping.items():
+            if len(cell_list) == 1:
+                cell_list[0].value = value
 
 
 class Box:
