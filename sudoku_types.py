@@ -90,22 +90,21 @@ class StandardSudoku(Sudoku):
 
     def eliminate_column_values(self):
         for cell in self.empty_cells:
-            cell_index = self.get_cell_index(cell)
-            column_index = self.get_column_index(cell_index)
+            column_index = cell.column
             column_cells = self.get_cells_in_column(column_index)
 
             for column_cell in column_cells:
-                if column_cell.value:
+                column_cell_value = column_cell.value
+                if column_cell_value:
                     try:
-                        cell.viable_values.remove(column_cell.value)
+                        cell.viable_values.remove(column_cell_value)
                     except ValueError:
                         # Removing value not in viable_values. This is fine.
                         pass
 
     def eliminate_row_values(self):
         for cell in self.empty_cells:
-            cell_index = self.get_cell_index(cell)
-            row_index = self.get_row_index(cell_index)
+            row_index = cell.row
             row_cells = self.get_cells_in_row(row_index)
 
             for row_cell in row_cells:
@@ -119,8 +118,7 @@ class StandardSudoku(Sudoku):
 
     def eliminate_box_values(self):
         for cell in self.empty_cells:
-            cell_index = self.get_cell_index(cell)
-            box_index = self.get_box_index(cell_index)
+            box_index = cell.box
             box_cells = self.get_cells_in_box(box_index)
 
             for box_cell in box_cells:
