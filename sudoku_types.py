@@ -5,7 +5,6 @@ from abc import ABCMeta
 
 
 class Sudoku(metaclass=ABCMeta):
-    '''TODO: Refactor to subclass list?'''
 
     def __init__(self):
         self.cells = []
@@ -29,7 +28,7 @@ class StandardSudoku(Sudoku):
     def __init__(self, data):
         super().__init__()
 
-        self.rows = [Row() for i in range(9)]
+        self.rows = [Row(sudoku=self, row=i) for i in range(9)]
 
         for cell_index, value in enumerate(data):
             cell = Cell(
@@ -64,18 +63,13 @@ class StandardSudoku(Sudoku):
         raise NotImplementedError
 
     def solve(self):
-        elimination_methods = [
-            self.eliminate_column_values,
-            self.eliminate_row_values,
-            self.eliminate_box_values
-        ]
 
         current_state = copy.deepcopy(self)
 
         while(not self.solved):
-            for elimination_method in elimination_methods:
-                elimination_method()
+            self.eliminate_values()
             self.fill_singles()
+            self.eliminate_values()
             self.fill_only_options()
 
             if current_state == self:
@@ -83,6 +77,11 @@ class StandardSudoku(Sudoku):
                 break
             else:
                 current_state = copy.deepcopy(self)
+
+    def eliminate_values(self):
+        self.eliminate_column_values()
+        self.eliminate_row_values()
+        self.eliminate_box_values()
 
     @property
     def solved(self):
@@ -134,6 +133,7 @@ class StandardSudoku(Sudoku):
         for cell in self.empty_cells:
             if len(cell.viable_values) == 1:
                 cell.value = cell.viable_values[0]
+                cell.viable_values = []
 
     def fill_only_options(self):
         self.fill_only_row_options()
@@ -174,13 +174,16 @@ class StandardSudoku(Sudoku):
         return pretty_string
 
 
-class Row(collections.UserList):
-    def __init__(self, cells=[]):
-        self.data = cells
+class Row(list):
+
+    def __init__(self, iterable=(), sudoku=None, row=None, *args, **kwargs):
+        super().__init__(iterable, *args, **kwargs)
+        self.sudoku = sudoku
+        self.row = row
 
     @property
     def empty_cells(self):
-        return (cell for cell in self.data if cell.value is None)
+        return (cell for cell in self if cell.value is None)
 
     def fill_only_options(self):
 
@@ -193,6 +196,7 @@ class Row(collections.UserList):
         for value, cell_list in viable_value_cell_mapping.items():
             if len(cell_list) == 1:
                 cell_list[0].value = value
+                cell_list[0].viable_values = []
 
 
 class Box:
