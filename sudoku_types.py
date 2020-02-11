@@ -28,7 +28,9 @@ class StandardSudoku(Sudoku):
     def __init__(self, data):
         super().__init__()
 
-        self.rows = [Row(sudoku=self, row=i) for i in range(9)]
+        self.rows = [CellSubset(sudoku=self, row=i) for i in range(9)]
+        self.columns = [CellSubset(sudoku=self, column=i) for i in range(9)]
+        self.boxes = [CellSubset(sudoku=self, box=i) for i in range(9)]
 
         for cell_index, value in enumerate(data):
             cell = Cell(
@@ -38,8 +40,11 @@ class StandardSudoku(Sudoku):
                 self.get_row_index(cell_index),
                 self.get_box_index(cell_index)
             )
+
             self.cells.append(cell)
             self.rows[cell.row].append(cell)
+            self.columns[cell.column].append(cell)
+            self.boxes[cell.box].append(cell)
 
     def get_row_index(self, cell_index):
         return cell_index // 9
@@ -67,16 +72,20 @@ class StandardSudoku(Sudoku):
         current_state = copy.deepcopy(self)
 
         while(not self.solved):
-            self.eliminate_values()
-            self.fill_singles()
-            self.eliminate_values()
-            self.fill_only_options()
+            self.eliminate_and_fill(self.fill_singles)
+            self.eliminate_and_fill(self.fill_only_row_options)
+            self.eliminate_and_fill(self.fill_only_column_options)
+            self.eliminate_and_fill(self.fill_only_box_options)
 
             if current_state == self:
                 print('Puzzle could not be solved.')
                 break
             else:
                 current_state = copy.deepcopy(self)
+
+    def eliminate_and_fill(self, fill_function):
+        self.eliminate_values()
+        fill_function()
 
     def eliminate_values(self):
         self.eliminate_column_values()
@@ -135,12 +144,17 @@ class StandardSudoku(Sudoku):
                 cell.value = cell.viable_values[0]
                 cell.viable_values = []
 
-    def fill_only_options(self):
-        self.fill_only_row_options()
+    def fill_only_column_options(self):
+        for column in self.columns:
+            column.fill_only_options()
 
     def fill_only_row_options(self):
         for row in self.rows:
             row.fill_only_options()
+
+    def fill_only_box_options(self):
+        for box in self.boxes:
+            box.fill_only_options()
 
     @property
     def empty_cells(self):
@@ -174,12 +188,14 @@ class StandardSudoku(Sudoku):
         return pretty_string
 
 
-class Row(list):
+class CellSubset(list):
 
-    def __init__(self, iterable=(), sudoku=None, row=None, *args, **kwargs):
+    def __init__(self, iterable=(), sudoku=None, row=None, column=None, box=None, *args, **kwargs):
         super().__init__(iterable, *args, **kwargs)
         self.sudoku = sudoku
         self.row = row
+        self.column = column
+        self.box = box
 
     @property
     def empty_cells(self):
