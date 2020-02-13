@@ -1,10 +1,31 @@
 import unittest
 
 from util import read_sudoku_from_file
-from sudoku_types import StandardSudoku
+from sudoku_types import StandardSudoku, Cell, CellSubset
 
 
 TEST_SUDOKU_DATA = read_sudoku_from_file('sudokus_test.json')
+
+
+class TestCellSubset(unittest.TestCase):
+    def setUp(self):
+        cell_values = [None, 1, 5, None, 2, None, None, 7, None]
+        self.row_instance = CellSubset()
+
+        for cell_index, cell_value in enumerate(cell_values):
+            self.row_instance.append(Cell(cell_value, index=cell_index, row=0, column=cell_index, box=cell_index/3))
+
+    def test_fill_only_options(self):
+        # In this instance, the cell at index 3 should be updated with value 3, and the cell at index 5 updated with the value 9
+        self.row_instance[0].viable_values = [4, 6]
+        self.row_instance[3].viable_values = [3, 6]
+        self.row_instance[5].viable_values = [4, 6, 9]
+        self.row_instance[6].viable_values = [4, 6, 8]
+        self.row_instance[8].viable_values = [4, 8]
+
+        self.row_instance.fill_only_options()
+
+        self.assertEqual([cell.value for cell in self.row_instance], [None, 1, 5, 3, 2, 9, None, 7, None])
 
 
 class TestStandardSudokuMethods(unittest.TestCase):
