@@ -97,7 +97,7 @@ class TestReadSudokuFromFile(unittest.TestCase):
             ]
         }
 
-        actual_output = util.read_sudoku_from_file('sudokus_test.json')
+        actual_output = util.read_sudoku_from_file('sudokus_test_util.json')
 
         self.assertEqual(actual_output, expected_output)
 
