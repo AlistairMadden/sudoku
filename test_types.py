@@ -501,3 +501,14 @@ class TestStandardSudokuMethods(unittest.TestCase):
         )
 
         self.assertEqual(self.standard_sudoku_instance.__str__(), expected_str_representation)
+
+    def test_fill_only_row_options(self):
+        standard_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][1])
+        standard_sudoku_instance.eliminate_values()
+        standard_sudoku_instance.fill_only_row_options()
+
+        expected_cell_values = TEST_SUDOKU_DATA['sudokus'][1].copy()
+
+        expected_cell_values[0] = 1
+
+        self.assertEqual([cell.value for cell in standard_sudoku_instance.cells], expected_cell_values)
