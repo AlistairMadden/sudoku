@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from util import read_sudoku_from_file
 from sudoku_types import StandardSudoku, Cell, CellSubset
@@ -534,3 +535,11 @@ class TestStandardSudokuMethods(unittest.TestCase):
         expected_cell_values[0] = 1
 
         self.assertEqual([cell.value for cell in standard_sudoku_instance.cells], expected_cell_values)
+
+    def test_eliminate_and_fill(self):
+        fill_function = unittest.mock.Mock()
+
+        with patch.object(self.standard_sudoku_instance, 'eliminate_values') as eliminate_values:
+            self.standard_sudoku_instance.eliminate_and_fill(fill_function)
+            fill_function.assert_called_once()
+            eliminate_values.assert_called_once()
