@@ -31,16 +31,16 @@ class TestCellSubset(unittest.TestCase):
 
 class TestStandardSudokuMethods(unittest.TestCase):
     def setUp(self):
-        self.standard_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][0])
+        self.standard_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][0]['initial'])
 
     def test_instantiate(self):
-        self.assertEqual(list(map(lambda cell: cell.value, self.standard_sudoku_instance)), TEST_SUDOKU_DATA['sudokus'][0])
+        self.assertEqual(list(map(lambda cell: cell.value, self.standard_sudoku_instance)), TEST_SUDOKU_DATA['sudokus'][0]['initial'])
 
     def test_iteration(self):
 
         iterator = iter(self.standard_sudoku_instance)
 
-        for test_sudoku_value in TEST_SUDOKU_DATA['sudokus'][0]:
+        for test_sudoku_value in TEST_SUDOKU_DATA['sudokus'][0]['initial']:
             self.assertEqual(next(iterator).value, test_sudoku_value)
 
         with self.assertRaises(StopIteration):
@@ -49,10 +49,10 @@ class TestStandardSudokuMethods(unittest.TestCase):
     def test_equality(self):
         self.assertTrue(self.standard_sudoku_instance == self.standard_sudoku_instance)
 
-        second_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][0])
+        second_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][0]['initial'])
         self.assertTrue(self.standard_sudoku_instance == second_sudoku_instance)
 
-        third_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][0])
+        third_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][0]['initial'])
         second_sudoku_instance.cells[0].value = 1
         third_sudoku_instance.cells[0].value = 1
         self.assertTrue(second_sudoku_instance == third_sudoku_instance)
@@ -465,7 +465,7 @@ class TestStandardSudokuMethods(unittest.TestCase):
 
         self.standard_sudoku_instance.fill_singles()
 
-        expected_sudoku_data = TEST_SUDOKU_DATA['sudokus'][0]
+        expected_sudoku_data = TEST_SUDOKU_DATA['sudokus'][0]['initial']
         expected_sudoku_data = [value if value else 1 for value in expected_sudoku_data]
         expected_sudoku = StandardSudoku(expected_sudoku_data)
 
@@ -504,33 +504,33 @@ class TestStandardSudokuMethods(unittest.TestCase):
         self.assertEqual(self.standard_sudoku_instance.__str__(), expected_str_representation)
 
     def test_fill_only_row_options(self):
-        standard_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][1])
+        standard_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][1]['initial'])
         standard_sudoku_instance.eliminate_values()
         standard_sudoku_instance.fill_only_row_options()
 
-        expected_cell_values = TEST_SUDOKU_DATA['sudokus'][1].copy()
+        expected_cell_values = TEST_SUDOKU_DATA['sudokus'][1]['initial'].copy()
 
         expected_cell_values[0] = 1
 
         self.assertEqual([cell.value for cell in standard_sudoku_instance.cells], expected_cell_values)
 
     def test_fill_only_column_options(self):
-        standard_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][1])
+        standard_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][1]['initial'])
         standard_sudoku_instance.eliminate_values()
         standard_sudoku_instance.fill_only_column_options()
 
-        expected_cell_values = TEST_SUDOKU_DATA['sudokus'][1].copy()
+        expected_cell_values = TEST_SUDOKU_DATA['sudokus'][1]['initial'].copy()
 
         expected_cell_values[0] = 1
 
         self.assertEqual([cell.value for cell in standard_sudoku_instance.cells], expected_cell_values)
 
     def test_fill_only_box_options(self):
-        standard_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][1])
+        standard_sudoku_instance = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][1]['initial'])
         standard_sudoku_instance.eliminate_values()
         standard_sudoku_instance.fill_only_box_options()
 
-        expected_cell_values = TEST_SUDOKU_DATA['sudokus'][1].copy()
+        expected_cell_values = TEST_SUDOKU_DATA['sudokus'][1]['initial'].copy()
 
         expected_cell_values[0] = 1
 
@@ -543,3 +543,9 @@ class TestStandardSudokuMethods(unittest.TestCase):
             self.standard_sudoku_instance.eliminate_and_fill(fill_function)
             fill_function.assert_called_once()
             eliminate_values.assert_called_once()
+
+    def test_solve(self):
+        expected_sudoku = StandardSudoku(TEST_SUDOKU_DATA['sudokus'][0]['solved'])
+        self.standard_sudoku_instance.solve()
+
+        self.assertEqual(self.standard_sudoku_instance, expected_sudoku)
