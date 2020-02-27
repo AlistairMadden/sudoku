@@ -549,3 +549,11 @@ class TestStandardSudokuMethods(unittest.TestCase):
         self.standard_sudoku_instance.solve()
 
         self.assertEqual(self.standard_sudoku_instance, expected_sudoku)
+
+    def test_solve_unsolveable(self):
+        self.standard_sudoku_instance.cells[0].value = None
+
+        with unittest.mock.patch('builtins.print') as mock_print:
+            self.standard_sudoku_instance.solve()
+
+        mock_print.assert_called_once_with('Puzzle could not be solved.')
