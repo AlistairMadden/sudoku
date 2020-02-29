@@ -172,9 +172,6 @@ class StandardSudoku(Sudoku):
     def filter_filled_cells(self):
         return [cell for cell in self if cell.value is None]
 
-    def get_cell_index(self, cell):
-        return self.cells.index(cell)
-
     def __str__(self):
         pretty_string = ''
         for i in range(9):
