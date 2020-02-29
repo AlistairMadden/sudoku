@@ -212,14 +212,6 @@ class CellSubset(list):
                 cell_list[0].viable_values = []
 
 
-class Box:
-    def __init__(self, rows, columns, cells):
-        self.rows = rows
-        self.columns = columns
-        self.cells = cells if cells else []
-    cells = []
-
-
 class Cell:
     POSSIBLE_VALUES = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
