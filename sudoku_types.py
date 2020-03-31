@@ -1,5 +1,6 @@
 import collections
 import copy
+import random
 
 from abc import ABCMeta
 
@@ -66,6 +67,11 @@ class StandardSudoku(Sudoku):
         #   If all remaining cells have viable numbers, continue
         #   Else pick a different number
         raise NotImplementedError
+
+    def get_shuffled_cell_indices(self):
+        cell_indices = list(range(self.NUM_CELLS))
+        random.shuffle(cell_indices)
+        return cell_indices
 
     def solve(self):
 

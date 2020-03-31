@@ -559,3 +559,15 @@ class TestStandardSudokuMethods(unittest.TestCase):
             self.standard_sudoku_instance.solve()
 
         mock_print.assert_called_once_with('Puzzle could not be solved.')
+
+    def test_get_shuffled_cell_indices(self):
+        shuffled_cell_indices = self.standard_sudoku_instance.get_shuffled_cell_indices()
+
+        shuffled_cell_indices_set = set(shuffled_cell_indices)
+        cell_indices_set = set(range(self.standard_sudoku_instance.NUM_CELLS))
+
+        self.assertEqual(shuffled_cell_indices_set, cell_indices_set)
+
+        shuffled_cell_indices_repeat = self.standard_sudoku_instance.get_shuffled_cell_indices()
+
+        self.assertNotEqual(shuffled_cell_indices, shuffled_cell_indices_repeat)
